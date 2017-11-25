@@ -7,9 +7,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import osoble.bloodhero.Models.User;
 import osoble.bloodhero.R;
@@ -22,11 +26,14 @@ public class DonorAdapter extends FirebaseRecyclerAdapter<User, DonorAdapter.Don
 
     private static final String TAG = DonorAdapter.class.getSimpleName();
     private Context mContext;
+    private StorageReference mStorageReference;
+    private StorageReference degreeRef;
 
     public DonorAdapter(Class<User> modelClass, int modelLayout, Class<DonorViewHolder>
             viewHolderClass, Query ref, Context mContext) {
         super(modelClass, modelLayout, viewHolderClass, ref);
         this.mContext = mContext;
+        mStorageReference = FirebaseStorage.getInstance().getReference();
         Log.i("Donor Contructor", "Was Called");
     }
 
@@ -40,12 +47,12 @@ public class DonorAdapter extends FirebaseRecyclerAdapter<User, DonorAdapter.Don
     @Override
     protected void populateViewHolder(DonorViewHolder viewHolder, final User model, int position) {
         viewHolder.bind(model);
-        /*
+        degreeRef = mStorageReference.child("User").child(model.getId()).child("/profile.jpg");
         Glide
                 .with(mContext)
-                .load(model.getImage())
+                .using(new FirebaseImageLoader())
+                .load(degreeRef)
                 .into(viewHolder.icon);
-                */
     }
 
     public static class DonorViewHolder extends RecyclerView.ViewHolder {

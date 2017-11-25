@@ -14,8 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -24,6 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -49,6 +54,9 @@ public class HomeFragment extends Fragment {
     private AppointmentAdapter mAdapter;
     private ProgressDialog progress;
     private FirebaseUser firebaseUser;
+    private StorageReference mStorageReference;
+    private StorageReference degreeRef;
+    private ImageView background;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -60,6 +68,8 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("Home");
+
+        background = view.findViewById(R.id.home_background_image);
         /** end after 1 month from now */
         Calendar endDate = Calendar.getInstance();
         endDate.add(Calendar.MONTH, 1);
@@ -82,6 +92,8 @@ public class HomeFragment extends Fragment {
             public void onDateSelected(Date date, int position){
                 Log.i("----------The Date is ", date.toString());
                 Log.i("-------The position is ", Integer.toString(position));
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Log.i("-------", sdf.format(date));
             }
         });
 
@@ -92,11 +104,12 @@ public class HomeFragment extends Fragment {
 
         progress = new ProgressDialog(getContext());
         progress.setMessage("Loading...");
-        progress.setCancelable(false);
+        progress.setCancelable(true);
         progress.show();
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
+        mStorageReference = FirebaseStorage.getInstance().getReference();
+        degreeRef = mStorageReference.child("User").child(firebaseUser.getUid()).child("/profile.jpg");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.keepSynced(true);
         childRef = mDatabaseRef.child("Appointment").child(firebaseUser.getUid());
@@ -156,6 +169,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        Glide
+                .with(getActivity())
+                .using(new FirebaseImageLoader())
+                .load(degreeRef)
+                .into(background);
 
         mDividerItemDecoration = new DividerItemDecoration(
                 appointmentRecyclerView.getContext(), LinearLayout.HORIZONTAL);
@@ -171,9 +189,10 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public Date convertToDate(String date){
-        Date d = new Date();
-        return d;
+    public static Calendar toCalendar(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal;
     }
     public void changeFragment(Fragment f){
         fragmentManager = getFragmentManager();

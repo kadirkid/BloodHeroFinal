@@ -154,9 +154,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                         progressDialog.dismiss();
 
                         if(task.isSuccessful()){
-
-                            user = new User(namestr, passwordstr, emailstr, blood, filePath.toString()
-                                    , country_str);
+                            firebaseUser = auth.getCurrentUser();
+                            user = new User(namestr, passwordstr, emailstr, blood, firebaseUser.getUid(), country_str);
                             addToDatabase(user);
                         }
                         else{
@@ -183,7 +182,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
                         if(task.isSuccessful()){
                             Snackbar.make(getView(), "Login Successful", Snackbar.LENGTH_SHORT);
-                            startActivity(new Intent(getActivity(), HomeActivity.class));
+//                            startActivity(new Intent(getActivity(), HomeActivity.class));
 //                            getActivity().finish();
                         }
                         else{
@@ -249,9 +248,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
                             Log.i("----------File", "Uploaded------");
-                            Log.i("Download Link  ", degreeRef.getDownloadUrl().toString());
-                            user.setImage(degreeRef.getDownloadUrl().toString());
-                            Toast.makeText(getContext(), "File Uploaded!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "File Uploaded!", Toast.LENGTH_SHORT)
+                                    .show();
+
+                            startActivity(new Intent(getActivity(), HomeActivity.class));
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

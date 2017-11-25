@@ -95,7 +95,7 @@ public class BloodBankAppointmentFragment extends Fragment {
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                date = Integer.toString(i2) + ":" + Integer.toString(i1) + ":" + Integer.toString(i);
+                date = Integer.toString(i2) + "/" + Integer.toString(i1) + "/" + Integer.toString(i);
                 Calendar c = Calendar.getInstance();
                 int hour = c.get(Calendar.HOUR_OF_DAY);
                 int minute = c.get(Calendar.MINUTE);

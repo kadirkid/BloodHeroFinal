@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +26,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import jp.wasabeef.blurry.Blurry;
 import osoble.bloodhero.Activities.MainActivity;
@@ -34,7 +37,7 @@ import osoble.bloodhero.R;
 public class ProfileFragment extends Fragment implements View.OnClickListener {
     TextView name, email, bloodType;
     RadioButton publicButton, privateButton;
-    ImageView backgroundImage;
+    ImageView backgroundImage, profilePicture;
     Button update, logout;
 
     private FragmentManager fragmentManager;
@@ -46,15 +49,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private DatabaseReference childref;
     private User user;
     private ProgressDialog progressDialog;
+    private StorageReference mStorageReference;
+    private StorageReference degreeRef;
 
     public ProfileFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -63,6 +62,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.profile, container, false);
         getActivity().setTitle("Profile");
+
         name = view.findViewById(R.id.profile_name);
         email = view.findViewById(R.id.profile_email);
         bloodType = view.findViewById(R.id.profile_blood);
@@ -71,7 +71,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         privateButton = view.findViewById(R.id.profile_private);
 
         backgroundImage = view.findViewById(R.id.profile_background_image);
-        blurrImage();
+        profilePicture = view.findViewById(R.id.profile_picture);
 
         update = view.findViewById(R.id.profile_update);
         logout = view.findViewById(R.id.profile_logout);
@@ -80,6 +80,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
+        mStorageReference = FirebaseStorage.getInstance().getReference();
+        degreeRef = mStorageReference.child("User").child(firebaseUser.getUid()).child("/profile.jpg");
         databaseReference = FirebaseDatabase.getInstance().getReference();
         childref = databaseReference.child("User");
 
@@ -112,13 +114,30 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         email.setText(user.getEmail());
                         bloodType.setText(user.getBloodType());
 
+                        Glide
+                                .with(getActivity())
+                                .using(new FirebaseImageLoader())
+                                .load(degreeRef)
+                                .into(profilePicture);
+
+                        Glide
+                                .with(getActivity())
+                                .using(new FirebaseImageLoader())
+                                .load(degreeRef)
+                                .into(backgroundImage);
+
+                        if(backgroundImage != null){
+                            blurrImage();
+                        }
+
+
                         if(user.isPrivacy()){
                             privateButton.toggle();
-                            publicButton.setEnabled(false);
+//                            publicButton.setEnabled(false);
                         }
                         else{
                             publicButton.toggle();
-                            privateButton.setEnabled(false);
+//                            privateButton.setEnabled(false);
                         }
                         break;
                     }
@@ -139,7 +158,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private void blurrImage() {
         BitmapDrawable drawable = (BitmapDrawable) backgroundImage.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
-        Blurry.with(getContext()).from(bitmap).into(backgroundImage);
+        Blurry
+                .with(getContext())
+                .from(bitmap)
+                .into(backgroundImage);
     }
 
     public void changeFragment(Fragment f){

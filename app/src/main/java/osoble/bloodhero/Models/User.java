@@ -9,16 +9,16 @@ public class User {
     private String password;
     private String email;
     private String bloodType;
-    private String image;
+    private String id;
     private String region;
     private boolean status;
 
-    public User(String name, String password, String email, String bloodType, String image, String region) {
+    public User(String name, String password, String email, String bloodType, String id, String region) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.bloodType = bloodType;
-        this.image = image;
+        this.id = id;
         this.region = region;
         status = false;
 
@@ -50,15 +50,11 @@ public class User {
         this.status = privacy;
     }
 
-    public String getImage() {
-        return image;
-    }
-
     public String getRegion() {
         return region;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public String getId() {
+        return id;
     }
 }
