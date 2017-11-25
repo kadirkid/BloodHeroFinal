@@ -38,7 +38,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.search, container, false);
-
+        getActivity().setTitle("Search for Donors");
         bloodTypeSpinner = view.findViewById(R.id.spinner1);
         regionSpinner = view.findViewById(R.id.spinner2);
 
@@ -82,7 +82,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         fragmentManager = getFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
-                .replace(R.id.mainframe, f);
+                .replace(R.id.homeframe, f);
 
         fragmentTransaction.commit();
     }

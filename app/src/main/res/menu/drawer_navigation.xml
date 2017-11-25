@@ -8,15 +8,19 @@
         android:title="@string/home"/>
 
     <item
-        android:id="@+id/nav_profile"
-        android:title="@string/profile_nav"/>
-
-    <item
         android:id="@+id/nav_donor"
         android:title="@string/search_for_donors_menu"/>
 
     <item
         android:id="@+id/nav_appointment"
         android:title="@string/set_up_appointment"/>
+
+    <item
+        android:id="@+id/nav_Learn"
+        android:title="@string/learn_more"/>
+
+    <item
+        android:id="@+id/nav_profile"
+        android:title="@string/profile_nav"/>
 
 </menu>

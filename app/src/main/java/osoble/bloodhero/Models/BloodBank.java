@@ -1,22 +1,20 @@
 package osoble.bloodhero.Models;
 
-import java.util.UUID;
-
 /**
  * Created by abdulahiosoble on 10/20/17.
  */
 
 public class BloodBank {
     private final String TAG = BloodBank.class.getSimpleName();
-    private String ID;
+    private String id;
     private String name;
     private String tel_no;
     private String fax_no;
     private String address;
     private String priority;
 
-    public BloodBank(String name, String tel_no, String fax_no, String address) {
-        ID = UUID.randomUUID().toString();
+    public BloodBank(String name, String tel_no, String fax_no, String address, String ID) {
+        this.id = ID;
         this.name = name;
         this.tel_no = tel_no;
         this.fax_no = fax_no;
@@ -43,7 +41,7 @@ public class BloodBank {
     }
 
     public String getID() {
-        return ID;
+        return id;
     }
 
     public String getPriority() {

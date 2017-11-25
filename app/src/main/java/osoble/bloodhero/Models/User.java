@@ -53,4 +53,12 @@ public class User {
     public String getImage() {
         return image;
     }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

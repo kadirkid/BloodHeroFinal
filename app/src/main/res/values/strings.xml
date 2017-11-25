@@ -95,4 +95,6 @@
     <string name="search_for_donors_menu">Search for Donors</string>
     <string name="profile_nav">Profile</string>
     <string name="home">Home</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="learn_more">Learn More</string>
 </resources>

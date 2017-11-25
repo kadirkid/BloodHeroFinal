@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background"
     android:orientation="vertical">
 
@@ -50,17 +51,25 @@
             android:textStyle="bold" />
 
     </RelativeLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/grey">
 
     <devs.mulham.horizontalcalendar.HorizontalCalendarView
         android:id="@+id/home_calendar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:textColorNormal="@color/colorPrimaryDark"
+        app:textColorSelected="@color/filling"/>
 
-    </devs.mulham.horizontalcalendar.HorizontalCalendarView>
+</LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/r_donation_history"/>
+        android:background="@color/grey"
+        android:id="@+id/r_appointment"/>
 
 </LinearLayout>

@@ -8,7 +8,7 @@
                     <!-- TODO: Content -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:foregroundGravity=""
         android:layout_marginBottom="15dp"
         android:layout_alignParentBottom="true"
@@ -18,9 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="32dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_marginBottom="32dp">
 
         <ImageView
             android:layout_width="100dp"
@@ -85,7 +83,8 @@
             android:src="@drawable/dont_have_an_account"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:focusable="true" />
 
     </LinearLayout>
     </ScrollView>

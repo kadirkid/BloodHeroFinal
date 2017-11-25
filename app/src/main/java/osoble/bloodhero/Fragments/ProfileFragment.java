@@ -62,7 +62,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.profile, container, false);
-
+        getActivity().setTitle("Profile");
         name = view.findViewById(R.id.profile_name);
         email = view.findViewById(R.id.profile_email);
         bloodType = view.findViewById(R.id.profile_blood);
