@@ -17,8 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -27,7 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
@@ -69,12 +66,22 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("Home");
 
-        background = view.findViewById(R.id.home_background_image);
+        //-------------------------------------Widgets--------------------------------------------//
+        appointmentRecyclerView = view.findViewById(R.id.r_appointment);
+        appointmentRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.VERTICAL, false));
+
+        progress = new ProgressDialog(getContext());
+        progress.setMessage("Loading...");
+        progress.setCancelable(true);
+        progress.show();
+
+        //------------------------------------Calendar Setup--------------------------------------//
         /** end after 1 month from now */
         Calendar endDate = Calendar.getInstance();
         endDate.add(Calendar.MONTH, 1);
 
-/** start before 1 month from now */
+        /** start before 1 month from now */
         Calendar startDate = Calendar.getInstance();
         startDate.add(Calendar.MONTH, -1);
 
@@ -97,28 +104,22 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        //----------------------------------------------------------------------------------------//
-        appointmentRecyclerView = view.findViewById(R.id.r_appointment);
-        appointmentRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
-                LinearLayoutManager.VERTICAL, false));
-
-        progress = new ProgressDialog(getContext());
-        progress.setMessage("Loading...");
-        progress.setCancelable(true);
-        progress.show();
+        //---------------------------------------Database-----------------------------------------//
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        mStorageReference = FirebaseStorage.getInstance().getReference();
-        degreeRef = mStorageReference.child("User").child(firebaseUser.getUid()).child("/profile.jpg");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.keepSynced(true);
         childRef = mDatabaseRef.child("Appointment").child(firebaseUser.getUid());
-        ref = childRef.orderByChild("date");
+        ref = childRef.orderByChild("date").limitToFirst(10);
+
+        Log.i("---------------------", "---------------------");
+        Log.i("Home UserID", firebaseUser.getUid());
+        Log.i("---------------------", "---------------------");
 
         childRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                progress.dismiss();
+//                progress.dismiss();
             }
 
             @Override
@@ -169,11 +170,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        Glide
-                .with(getActivity())
-                .using(new FirebaseImageLoader())
-                .load(degreeRef)
-                .into(background);
+        //--------------------------------RecyclerView Setup--------------------------------------//
 
         mDividerItemDecoration = new DividerItemDecoration(
                 appointmentRecyclerView.getContext(), LinearLayout.HORIZONTAL);
@@ -184,16 +181,18 @@ public class HomeFragment extends Fragment {
         mAdapter = new AppointmentAdapter(Appointment.class, R.layout.appointment_row,
                 AppointmentAdapter.AppointmentViewHolder.class, ref, getContext());
 
-
+        appointmentRecyclerView.setAdapter(mAdapter);
         return view;
     }
 
+    //------------------------------------------METHODS-------------------------------------------//
 
     public static Calendar toCalendar(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
     }
+
     public void changeFragment(Fragment f){
         fragmentManager = getFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction()

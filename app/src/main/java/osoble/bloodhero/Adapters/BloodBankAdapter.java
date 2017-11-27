@@ -53,6 +53,7 @@ public class BloodBankAdapter extends FirebaseRecyclerAdapter<BloodBank, BloodBa
                                       final int position) {
         list.add(model);
         Log.i("ID is -> ", model.getID());
+        callback.onItemClick(list.get(position).getID());
         viewHolder.bind(model);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

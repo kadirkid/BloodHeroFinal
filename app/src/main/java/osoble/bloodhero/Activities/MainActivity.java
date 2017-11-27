@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(new LoginFragment());
         }
 
-        //startActivity(new Intent(this, HomeActivity.class));
     }
 
     public void changeFragment(Fragment f){
@@ -47,13 +46,3 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 }
-/*
-user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user != null){
-            startActivity(new Intent(this, HomeActivity.class));
-        }
-        else{
-            changeFragment(new LoginFragment());
-        }
-
-        */

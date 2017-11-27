@@ -87,6 +87,9 @@ public class BloodBankAppointmentFragment extends Fragment {
                 else{
                     appointment = new Appointment(bloodBankID, date, time,
                             UUID.randomUUID().toString());
+
+                    Log.i("BLOODBANK----", "-----BLOODBANK");
+                    Log.i(appointment.getBloodBank(), appointment.getDate());
                     addToDatabase(appointment);
                 }
             }
@@ -117,7 +120,7 @@ public class BloodBankAppointmentFragment extends Fragment {
         progress = new ProgressDialog(getContext());
         progress.setMessage("Loading...");
         progress.setCancelable(false);
-        progress.show();
+//        progress.show();
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.keepSynced(true);
@@ -150,6 +153,7 @@ public class BloodBankAppointmentFragment extends Fragment {
             }
         });
 
+        //--------------------------------RecyclerView Setup--------------------------------------//
         mDividerItemDecoration = new DividerItemDecoration(
                 bloodbankRecyclerView.getContext(), LinearLayout.HORIZONTAL);
         mDividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider_line));
@@ -172,6 +176,8 @@ public class BloodBankAppointmentFragment extends Fragment {
 
         return view;
     }
+
+    //------------------------------------------METHODS-------------------------------------------//
 
     private void addToDatabase(Appointment appointment) {
         final ProgressDialog progressDialog = new ProgressDialog(getContext());

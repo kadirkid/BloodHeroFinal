@@ -17,6 +17,9 @@ public class Appointment {
         this.time = time;
     }
 
+    public Appointment() {
+    }
+
     public String getBloodBank() {
         return bloodbank_id;
     }

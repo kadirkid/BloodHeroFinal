@@ -14,9 +14,6 @@ import com.google.firebase.database.ValueEventListener;
 import osoble.bloodhero.Models.BloodBank;
 import osoble.bloodhero.Models.User;
 
-/**
- * Created by abdulahiosoble on 11/25/17.
- */
 
 public class Utils {
     private FirebaseAuth auth;

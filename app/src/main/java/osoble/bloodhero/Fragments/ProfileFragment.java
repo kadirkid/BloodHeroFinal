@@ -2,8 +2,6 @@ package osoble.bloodhero.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,23 +19,20 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import jp.wasabeef.blurry.Blurry;
 import osoble.bloodhero.Activities.MainActivity;
 import osoble.bloodhero.Models.User;
 import osoble.bloodhero.R;
+import osoble.bloodhero.Utils.Utils;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
     TextView name, email, bloodType;
     RadioButton publicButton, privateButton;
-    ImageView backgroundImage, profilePicture;
+    ImageView profilePicture;
     Button update, logout;
 
     private FragmentManager fragmentManager;
@@ -62,7 +57,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.profile, container, false);
         getActivity().setTitle("Profile");
-
+        //------------------------------------Widgets---------------------------------------------//
         name = view.findViewById(R.id.profile_name);
         email = view.findViewById(R.id.profile_email);
         bloodType = view.findViewById(R.id.profile_blood);
@@ -70,7 +65,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         publicButton = view.findViewById(R.id.profile_public);
         privateButton = view.findViewById(R.id.profile_private);
 
-        backgroundImage = view.findViewById(R.id.profile_background_image);
         profilePicture = view.findViewById(R.id.profile_picture);
 
         update = view.findViewById(R.id.profile_update);
@@ -78,6 +72,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         update.setOnClickListener(this);
         logout.setOnClickListener(this);
 
+        //---------------------------------Database and Storage-----------------------------------//
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
         mStorageReference = FirebaseStorage.getInstance().getReference();
@@ -89,6 +84,27 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         Log.i("UserID", firebaseUser.getUid());
         Log.i("---------------------", "---------------------");
 
+        user = new Utils().getLoggedInUser();
+        name.setText(user.getName());
+        email.setText(user.getEmail());
+        bloodType.setText(user.getBloodType());
+
+        Glide
+                .with(getActivity())
+                .using(new FirebaseImageLoader())
+                .load(degreeRef)
+                .into(profilePicture);
+
+        if(user.isPrivacy()){
+            privateButton.toggle();
+//                            publicButton.setEnabled(false);
+        }
+        else{
+            publicButton.toggle();
+//                            privateButton.setEnabled(false);
+        }
+
+        /*
         childref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -96,12 +112,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 Log.i("OnDataChange", "Called!!");
                 Log.i("---------------------", "---------------------");
 
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                int count = 0;
-
-                for(DataSnapshot child: children){
-                    if(child.getKey().equals(firebaseUser.getUid())){
-                        user = child.getValue(User.class);
+//                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+//                int count = 0;
+                user = dataSnapshot.child(firebaseUser.getUid()).getValue(User.class);
+//                for(DataSnapshot child: children){
+//                    if(child.getKey().equals(firebaseUser.getUid())){
+//                        user = child.getValue(User.class);
 
                         Log.i("---------------------", "---------------------");
                         Log.i(user.getName(), user.getPassword());
@@ -120,17 +136,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 .load(degreeRef)
                                 .into(profilePicture);
 
-                        Glide
-                                .with(getActivity())
-                                .using(new FirebaseImageLoader())
-                                .load(degreeRef)
-                                .into(backgroundImage);
-
-                        if(backgroundImage != null){
-                            blurrImage();
-                        }
-
-
                         if(user.isPrivacy()){
                             privateButton.toggle();
 //                            publicButton.setEnabled(false);
@@ -139,30 +144,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             publicButton.toggle();
 //                            privateButton.setEnabled(false);
                         }
-                        break;
+//                        break;
                     }
-                    Log.i("Count", Integer.toString(count));
-                }
-            }
+//                    Log.i("Count", Integer.toString(count));
+//                }
+//            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
+*/
 
         return view;
     }
 
-    private void blurrImage() {
-        BitmapDrawable drawable = (BitmapDrawable) backgroundImage.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-        Blurry
-                .with(getContext())
-                .from(bitmap)
-                .into(backgroundImage);
-    }
+    //------------------------------------------METHODS-------------------------------------------//
 
     public void changeFragment(Fragment f){
         fragmentManager = getFragmentManager();
@@ -172,6 +170,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         fragmentTransaction.commit();
     }
+
+    //------------------------------------------ON CLICK------------------------------------------//
 
     @Override
     public void onClick(View view) {

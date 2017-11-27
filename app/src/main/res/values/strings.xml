@@ -97,4 +97,5 @@
     <string name="home">Home</string>
     <string name="upload_image">Upload Image</string>
     <string name="learn_more">Learn More</string>
+    <string name="logout">Logout</string>
 </resources>

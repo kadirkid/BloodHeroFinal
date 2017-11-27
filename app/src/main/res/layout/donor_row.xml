@@ -35,6 +35,7 @@
             android:ellipsize="end"
             android:id="@+id/r_donor_name"
             android:drawableLeft="@drawable/name_icon"
+            android:drawablePadding="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceListItem"/>
@@ -45,6 +46,7 @@
             android:ellipsize="end"
             android:id="@+id/r_donor_email"
             android:drawableLeft="@drawable/email_icon"
+            android:drawablePadding="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceListItem"/>
@@ -55,6 +57,7 @@
             android:ellipsize="end"
             android:id="@+id/r_donor_blood_type"
             android:drawableLeft="@drawable/blood_type_icon"
+            android:drawablePadding="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceListItem"/>

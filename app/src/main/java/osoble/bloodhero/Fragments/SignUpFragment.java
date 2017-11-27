@@ -105,19 +105,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    public void setupSpinner() {
-        bloodTypes = new String[] {"Select Blood Type", "------------------------------", "O-", "O+", "A+",
-                "A-", "B+", "B-", "AB+" , "AB-"};
-        adapterB = new ArrayAdapter<>(getActivity(), R.layout.spinner_item,
-                bloodTypes);
-        bloodTypeSpinner.setAdapter(adapterB);
-
-        country = new String[] {"Select Region", "------------------------------", "Sharjah", "Dubai", "Abu Dhabi",
-                "Ras Al Khaimah", "Umm Al Quwain", "Fujairah", "Ajman"};
-        adapterC = new ArrayAdapter<>(getActivity(), R.layout.spinner_item,
-                country);
-        countrySpinner.setAdapter(adapterC);
-    }
+    //------------------------------------------ON CLICK------------------------------------------//
 
     @Override
     public void onClick(View view) {
@@ -135,6 +123,22 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             case R.id.upload_image:
                 showFileChooser();
         }
+    }
+
+    //------------------------------------------METHODS-------------------------------------------//
+
+    public void setupSpinner() {
+        bloodTypes = new String[] {"Select Blood Type", "------------------------------", "O-", "O+", "A+",
+                "A-", "B+", "B-", "AB+" , "AB-"};
+        adapterB = new ArrayAdapter<>(getActivity(), R.layout.spinner_item,
+                bloodTypes);
+        bloodTypeSpinner.setAdapter(adapterB);
+
+        country = new String[] {"Select Region", "------------------------------", "Sharjah", "Dubai", "Abu Dhabi",
+                "Ras Al Khaimah", "Umm Al Quwain", "Fujairah", "Ajman"};
+        adapterC = new ArrayAdapter<>(getActivity(), R.layout.spinner_item,
+                country);
+        countrySpinner.setAdapter(adapterC);
     }
 
     private void signup() {
@@ -250,7 +254,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                             Log.i("----------File", "Uploaded------");
                             Toast.makeText(getContext(), "File Uploaded!", Toast.LENGTH_SHORT)
                                     .show();
-
                             startActivity(new Intent(getActivity(), HomeActivity.class));
                         }
                     })

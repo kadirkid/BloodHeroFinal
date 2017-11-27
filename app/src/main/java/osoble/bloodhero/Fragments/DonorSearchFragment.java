@@ -54,6 +54,7 @@ public class DonorSearchFragment extends Fragment {
 
         getActivity().setTitle("Doctors");
 
+        //-------------------------------------Widgets--------------------------------------------//
         donorRecyclerView = view.findViewById(R.id.rDonorSearch);
         donorRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -62,6 +63,7 @@ public class DonorSearchFragment extends Fragment {
         progress.setCancelable(false);
         progress.show();
 
+        //----------------------------------Database and Storage----------------------------------//
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.keepSynced(true);
         childRef = mDatabaseRef.child("User");
@@ -93,6 +95,7 @@ public class DonorSearchFragment extends Fragment {
             }
         });
 
+        //--------------------------------------Getting Listing Criteria--------------------------//
         if(getArguments() != null){
             bloodtype = getArguments().getString(BLOODTYPE);
             region = getArguments().getString(REGION);
@@ -118,7 +121,7 @@ public class DonorSearchFragment extends Fragment {
                     DonorAdapter.DonorViewHolder.class, childRef, getContext());
         }
 
-
+        //--------------------------------RecyclerView Setup--------------------------------------//
         mDividerItemDecoration = new DividerItemDecoration(
                 donorRecyclerView.getContext(), LinearLayout.HORIZONTAL);
         mDividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider_line));

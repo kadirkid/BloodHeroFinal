@@ -61,6 +61,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    //------------------------------------------ON CLICK------------------------------------------//
+
     @Override
     public void onClick(View view) {
         switch(view.getId()){
@@ -75,6 +77,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
+    //------------------------------------------METHODS-------------------------------------------//
 
     public boolean check(){
         String emailstr = email.getText().toString().trim();

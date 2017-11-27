@@ -1,5 +1,6 @@
 package osoble.bloodhero.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -51,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         nav = (NavigationView) findViewById(R.id.navigationView);
         fragmentManager = getSupportFragmentManager();
 
+        nav.getMenu().findItem(R.id.nav_home).setChecked(true);
         nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -73,6 +77,11 @@ public class HomeActivity extends AppCompatActivity {
 
                     case R.id.nav_Learn:
                         changeFragment(new LearnFragment());
+                        break;
+
+                    case R.id.nav_logout:
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         break;
                 }
 

@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:popupBackground="@color/filling"
+                android:popupBackground="@color/background"
                 android:padding="10dp"
                 android:background="@drawable/edittext_signup_background" />
 
@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:popupBackground="@color/filling"
+                android:popupBackground="@color/background"
                 android:padding="10dp"
                 android:background="@drawable/edittext_signup_background" />
 

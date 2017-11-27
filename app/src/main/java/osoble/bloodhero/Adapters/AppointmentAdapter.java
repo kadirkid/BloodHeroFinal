@@ -21,7 +21,6 @@ import osoble.bloodhero.Utils.Utils;
 public class AppointmentAdapter extends FirebaseRecyclerAdapter<Appointment, AppointmentAdapter
         .AppointmentViewHolder> {
     private Context mContext;
-    private BloodBank bloodBank;
 
     public AppointmentAdapter(Class<Appointment> modelClass, int modelLayout,
                               Class<AppointmentViewHolder> viewHolderClass, Query ref,
@@ -45,15 +44,17 @@ public class AppointmentAdapter extends FirebaseRecyclerAdapter<Appointment, App
         Log.i("D populateViewHolder", "Was Called");
     }
 
-    public class AppointmentViewHolder extends RecyclerView.ViewHolder {
+    public static class AppointmentViewHolder extends RecyclerView.ViewHolder {
         TextView time;
+        private BloodBank bloodBank;
 
         public AppointmentViewHolder(View itemView) {
             super(itemView);
             time = itemView.findViewById(R.id.time);
         }
 
-        public void bind(Appointment appointment){
+        public void bind(Appointment appointment) {
+
             bloodBank = new Utils().getBloodBank(appointment.getBloodBank());
             time.setText("At " + appointment.getTime() + ", " + bloodBank.getName());
         }
