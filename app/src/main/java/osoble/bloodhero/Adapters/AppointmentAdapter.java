@@ -55,7 +55,7 @@ public class AppointmentAdapter extends FirebaseRecyclerAdapter<Appointment, App
 
         public void bind(Appointment appointment) {
 
-            bloodBank = new Utils().getBloodBank(appointment.getBloodBank());
+            bloodBank = new Utils().getBloodBank(appointment.getBloodbank_id());
             time.setText("At " + appointment.getTime() + ", " + bloodBank.getName());
         }
     }

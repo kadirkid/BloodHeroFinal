@@ -33,7 +33,7 @@ public class BloodBankAdapter extends FirebaseRecyclerAdapter<BloodBank, BloodBa
     private Callback callback;
 
     public interface Callback{
-        void onItemClick(String id);
+        void onItemClick(String id, String name);
     }
 
     public void setCallback(Callback callback){
@@ -53,7 +53,7 @@ public class BloodBankAdapter extends FirebaseRecyclerAdapter<BloodBank, BloodBa
                                       final int position) {
         list.add(model);
         Log.i("ID is -> ", model.getID());
-        callback.onItemClick(list.get(position).getID());
+        callback.onItemClick(list.get(position).getID(), list.get(position).getName());
         viewHolder.bind(model);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +61,7 @@ public class BloodBankAdapter extends FirebaseRecyclerAdapter<BloodBank, BloodBa
                 if(callback != null){
                     Log.i("-----------------", "------------------");
                     Log.i("ID IS ->", list.get(position).getID());
-                    callback.onItemClick(list.get(position).getID());
+                    callback.onItemClick(list.get(position).getID(), list.get(position).getName());
                 }
             }
         });

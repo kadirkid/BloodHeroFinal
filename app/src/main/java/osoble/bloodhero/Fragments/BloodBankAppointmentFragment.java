@@ -52,7 +52,7 @@ public class BloodBankAppointmentFragment extends Fragment {
     private SnapHelper snapHelper;
     private Button setAppointment;
     private Appointment appointment;
-    private String date, time, bloodBankID, userID;
+    private String date, time, bloodBankID, bloodBankName, userID;
 
     public BloodBankAppointmentFragment() {
         // Required empty public constructor
@@ -64,7 +64,7 @@ public class BloodBankAppointmentFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.blood_bank_appointment, container, false);
         Log.i(TAG, "Was Opened");
-        date = time = bloodBankID = userID = "";
+        date = time = bloodBankID = bloodBankName = userID = "";
         getActivity().setTitle("Set Appointment");
         mCalendarView = view.findViewById(R.id.appointment_calendar);
         bloodbankRecyclerView = view.findViewById(R.id.r_blood_bank_search);
@@ -85,11 +85,12 @@ public class BloodBankAppointmentFragment extends Fragment {
                     //Toast.makeText(getContext(), "Please select a Blood Bank", Toast.LENGTH_SHORT).show();
                 //}
                 else{
-                    appointment = new Appointment(bloodBankID, date, time,
-                            UUID.randomUUID().toString());
+                    appointment = new Appointment(UUID.randomUUID().toString(),
+                            bloodBankID, bloodBankName, time, date);
 
                     Log.i("BLOODBANK----", "-----BLOODBANK");
-                    Log.i(appointment.getBloodBank(), appointment.getDate());
+                    Log.i(appointment.getBloodbank_id(), appointment.getBloodbank_name());
+                    Log.i(appointment.getDate(), appointment.getTime());
                     addToDatabase(appointment);
                 }
             }
@@ -165,8 +166,9 @@ public class BloodBankAppointmentFragment extends Fragment {
 
         mAdapter.setCallback(new BloodBankAdapter.Callback() {
             @Override
-            public void onItemClick(String id) {
+            public void onItemClick(String id, String name) {
                 bloodBankID = id;
+                bloodBankName = name;
             }
         });
 
